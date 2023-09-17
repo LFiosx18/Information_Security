@@ -1,10 +1,10 @@
 import re
 
 REJEX = "^[а-яА-ЯёЁ ]+$"                # Регулярное выражение для проверки ключей на валидность
-FILE_NAME_INPUT_MES = 'input.txt'
-FILE_NAME_OUTPUT_CODE = 'output.txt'
-FILE_NAME_INPUT_CODE = 'output2.txt'
-FILE_NAME_OUTPUT_MES = 'output2.txt'
+FILE_NAME_INPUT_MES = 'Lab_1/input.txt'
+FILE_NAME_OUTPUT_CODE = 'Lab_1/output.txt'
+FILE_NAME_INPUT_CODE = 'Lab_1/output.txt'
+FILE_NAME_OUTPUT_MES = 'Lab_1/output2.txt'
 
 # Дополнительные символы алфавита
 DICT1 = {'ё': 32, ' ': 33, ',': 34, '.': 35, '\n': 36, '-': 37, '!': 38, '?': 39, ':': 40, ';': 41}
