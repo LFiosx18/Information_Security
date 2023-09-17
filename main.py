@@ -1,13 +1,18 @@
 import re
 
-REJEX = "^[а-яА-ЯёЁ ]+$"
+REJEX = "^[а-яА-ЯёЁ ]+$"                # Регулярное выражение для проверки ключей на валидность
 FILE_NAME_INPUT_MES = 'input.txt'
 FILE_NAME_OUTPUT_CODE = 'output.txt'
-DICT1 = {'ё': 5, ' ': 32, ',': 33, '.': 34, '\n': 35, '-': 36, '!': 37, '?': 38, ':': 39, ';': 40}
-DICT2 = {5: 'ё', 32: ' ', 33: ',', 34: '.', 35: '\n', 36: '-', 37: '!', 38: '?', 39: ':', 40: ';'}
-N = 41
+FILE_NAME_INPUT_CODE = 'output2.txt'
+FILE_NAME_OUTPUT_MES = 'output2.txt'
+
+# Дополнительные символы алфавита
+DICT1 = {'ё': 32, ' ': 33, ',': 34, '.': 35, '\n': 36, '-': 37, '!': 38, '?': 39, ':': 40, ';': 41}
+DICT2 = {32: 'ё', 33: ' ', 34: ',', 35: '.', 36: '\n', 37: '-', 38: '!', 39: '?', 40: ':', 41: ';'}
+N = 42                                  # Мощность используемого алфавита
 
 
+# Чтение ключей и проверка их на отсутствие запрещённых символов
 def read_keys():
     print("Enter the keys on a new line, press 'e' to complete the entry")
     key = input().lower()
@@ -21,16 +26,19 @@ def read_keys():
     return keys
 
 
-def read_message():
-    with open(FILE_NAME_INPUT_MES, 'r', encoding='utf-8') as file:
+# Чтение файла с сообщением
+def read_message(file_name):
+    with open(file_name, 'r', encoding='utf-8') as file:
         return file.read().lower()
 
 
-def write_encrypted_message(message):
-    with open(FILE_NAME_OUTPUT_CODE, 'w+', encoding='utf-8') as file:
+# Запись сообщения в файл
+def write_message(file_name, message):
+    with open(file_name, 'w+', encoding='utf-8') as file:
         file.write(''.join(message))
 
 
+# Преобразование символов в числовое представление
 def sym_to_num(message):
     codes = []
     for i in message:
@@ -43,6 +51,7 @@ def sym_to_num(message):
     return codes
 
 
+# Преобразование числа в соответствующий ему символ алфавита
 def num_to_sym(codes):
     message = []
     for i in codes:
@@ -53,6 +62,7 @@ def num_to_sym(codes):
     return message
 
 
+# Шифрование
 def encryption(message, keys):
     message_code = sym_to_num(message)
     encryption_message = []
@@ -64,11 +74,30 @@ def encryption(message, keys):
     return num_to_sym(encryption_message)
 
 
+# Дешифрование
+def decryption(message, keys):
+    message_code = sym_to_num(message)
+    decryption_message = []
+    for i in range(len(message_code)):
+        res = message_code[i]
+        for key in keys:
+            res -= key[i % len(key)]
+        decryption_message.append(res % N)
+    return num_to_sym(decryption_message)
+
+
 def main():
-    keys = read_keys()
-    message = read_message()
-    encryption_message = encryption(message, keys)
-    write_encrypted_message(encryption_message)
+    keys = read_keys()                                          # Чтение ключей
+    message = read_message(FILE_NAME_INPUT_MES)                 # Чтение исходного сообщения
+    encryption_message = encryption(message, keys)              # Шифрование сообщения
+    write_message(FILE_NAME_OUTPUT_CODE, encryption_message)    # Запись результата в файл
+
+    new_key = input('New keys?\n')
+    if new_key == 'y':
+        keys = read_keys()
+    message = read_message(FILE_NAME_INPUT_CODE)                # Чтение зашифрованного сообщения
+    decryption_message = decryption(message, keys)              # Дешифрование сообщения
+    write_message(FILE_NAME_OUTPUT_MES, decryption_message)     # Запись результата в файл
 
 
 if __name__ == '__main__':
