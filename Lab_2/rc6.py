@@ -57,6 +57,7 @@ def main():
     print_result(bit_message, decoded_message, encoded_message)
 
 
+# Функция декодирования
 def decryption(mes, w, S, r):
     result_bit = ''
     sync_pack = str_to_bin(IV)[:4 * w]
@@ -96,6 +97,7 @@ def decryption(mes, w, S, r):
     return result_bit
 
 
+# функция кодирования
 def encryption(mes, w, S, r):
     result_bit = ''
     sync_pack = str_to_bin(IV)[:4 * w]
